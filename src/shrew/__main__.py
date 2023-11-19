@@ -1,5 +1,6 @@
-import numpy as np
+import shrew
 import random
+import os
 
 
 def main():
@@ -18,75 +19,13 @@ def main():
     print("Treatments: Control / Intervention")
     print()
 
-    print("Current enrollment status:")
-    c = np.zeros((3, 2, 3, 2), dtype=int)
-    c[0, 0, 0, 0] = 1  # YM1 c
-    c[0, 0, 0, 1] = 0  # YM1 i
+    # Load enrollments
+    c = shrew.read_enroll_file(os.path.join('test', 'enroll2.txt'), [2, 2], 2)
 
-    c[1, 0, 0, 0] = 1  # GM1 c
-    c[1, 0, 0, 1] = 3  # GM1 i
-
-    c[2, 0, 0, 0] = 4  # OM1 c
-    c[2, 0, 0, 1] = 2  # OM1 i
-
-    c[0, 1, 0, 0] = 2  # YF1 c
-    c[0, 1, 0, 1] = 1  # YF1 i
-
-    c[1, 1, 0, 0] = 3  # GF1 c
-    c[1, 1, 0, 1] = 1  # GF1 i
-
-    c[2, 1, 0, 0] = 2  # OF1 c
-    c[2, 1, 0, 1] = 1  # OF1 i
-
-    c[0, 0, 1, 0] = 0  # YM2 c
-    c[0, 0, 1, 1] = 0  # YM2 i
-
-    c[1, 0, 1, 0] = 0  # GM2 c
-    c[1, 0, 1, 1] = 1  # GM2 i
-
-    c[2, 0, 1, 0] = 3  # OM2 c
-    c[2, 0, 1, 1] = 1  # OM2 i
-
-    c[0, 1, 1, 0] = 2  # YF2 c
-    c[0, 1, 1, 1] = 1  # YF2 i
-
-    c[1, 1, 1, 0] = 3  # GF2 c
-    c[1, 1, 1, 1] = 3  # GF2 i
-
-    c[2, 1, 1, 0] = 1  # OF2 c
-    c[2, 1, 1, 1] = 2  # OF2 i
-
-    c[0, 0, 2, 0] = 0  # YM3 c
-    c[0, 0, 2, 1] = 0  # YM3 i
-
-    c[1, 0, 2, 0] = 0  # GM3 c
-    c[1, 0, 2, 1] = 2  # GM3 i
-
-    c[2, 0, 2, 0] = 0  # OM3 c
-    c[2, 0, 2, 1] = 3  # OM3 i
-
-    c[0, 1, 2, 0] = 0  # YF3 c
-    c[0, 1, 2, 1] = 1  # YF3 i
-
-    c[1, 1, 2, 0] = 2  # GF3 c
-    c[1, 1, 2, 1] = 0  # GF3 i
-
-    c[2, 1, 2, 0] = 0  # OF3 c
-    c[2, 1, 2, 1] = 3  # OF3 i
-
-    print(f'Total: {c.sum()} subjects')
-    print(f'YM1: {c[0, 0, 0, 0]}/{c[0, 0, 0, 1]} ; YM2: {c[0, 0, 1, 0]}/{c[0, 0, 1, 1]} ; '
-          f'YM3: {c[0, 0, 2, 0]}/{c[0, 0, 2, 1]}')
-    print(f'YF1: {c[0, 1, 0, 0]}/{c[0, 1, 0, 1]} ; YF2: {c[0, 1, 1, 0]}/{c[0, 1, 1, 1]} ; '
-          f'YF3: {c[0, 1, 2, 0]}/{c[0, 1, 2, 1]}')
-    print(f'GM1: {c[1, 0, 0, 0]}/{c[1, 0, 0, 1]} ; GM2: {c[1, 0, 1, 0]}/{c[1, 0, 1, 1]} ; '
-          f'GM3: {c[1, 0, 2, 0]}/{c[1, 0, 2, 1]}')
-    print(f'GF1: {c[1, 1, 0, 0]}/{c[1, 1, 0, 1]} ; GF2: {c[1, 1, 1, 0]}/{c[1, 1, 1, 1]} ; '
-          f'GF3: {c[1, 1, 2, 0]}/{c[1, 1, 2, 1]}')
-    print(f'OM1: {c[2, 0, 0, 0]}/{c[2, 0, 0, 1]} ; OM2: {c[2, 0, 1, 0]}/{c[2, 0, 1, 1]} ; '
-          f'OM3: {c[2, 0, 2, 0]}/{c[2, 0, 2, 1]}')
-    print(f'OF1: {c[2, 1, 0, 0]}/{c[2, 1, 0, 1]} ; OF2: {c[2, 1, 1, 0]}/{c[2, 1, 1, 1]} ; '
-          f'OF3: {c[2, 1, 2, 0]}/{c[2, 1, 2, 1]}')
+    print(f'00: {c[0, 0, 0]}/{c[0, 0, 1]}')
+    print(f'01: {c[0, 1, 0]}/{c[0, 1, 1]}')
+    print(f'10: {c[1, 0, 0]}/{c[1, 0, 1]}')
+    print(f'11: {c[1, 1, 0]}/{c[1, 1, 1]}')
     print()
 
     p_imb = 0.8
@@ -96,25 +35,21 @@ def main():
     print(f' - Probability:         {p_imb}')
     print()
 
-    print("New subject: GM1")
-    f = (1, 0, 0)
-    print(f'Subjects in levels "GM1": Control: {c[1, 0, 0, 0]} vs Intervention: {c[1, 0, 0, 1]}')
+    print("New subject: 10")
+    f = (1, 0)
+    print(f'Subjects in levels "10": Control: {c[1, 0, 0]} vs Intervention: {c[1, 0, 1]}')
 
-    n00 = c.sum(axis=(1, 2))[f[0], 0]
-    n01 = c.sum(axis=(1, 2))[f[0], 1]
-    print(f'Subjects in level "G": Control: {n00} vs Intervention: {n01}')
+    n00 = c.sum(axis=1)[f[0], 0]
+    n01 = c.sum(axis=1)[f[0], 1]
+    print(f'Subjects in factor 0 Level 0: Control: {n00} vs Intervention: {n01}')
 
-    n10 = c.sum(axis=(0, 2))[f[1], 0]
-    n11 = c.sum(axis=(0, 2))[f[1], 1]
-    print(f'Subjects in level "M": Control: {n10} vs Intervention: {n11}')
-
-    n20 = c.sum(axis=(0, 1))[f[2], 0]
-    n21 = c.sum(axis=(0, 1))[f[2], 1]
-    print(f'Subjects in level "1": Control: {n20} vs Intervention: {n21}')
+    n10 = c.sum(axis=0)[f[1], 0]
+    n11 = c.sum(axis=0)[f[1], 1]
+    print(f'Subjects in factor 1 level 0: Control: {n10} vs Intervention: {n11}')
     print()
 
-    g0 = abs((n00 + 1) - n01) + abs((n10 + 1) - n11) + abs((n20 + 1) - n21)
-    g1 = abs(n00 - (n01 + 1)) + abs(n10 - (n11 + 1)) + abs(n20 - (n21 + 1))
+    g0 = abs((n00 + 1) - n01) + abs((n10 + 1) - n11)
+    g1 = abs(n00 - (n01 + 1)) + abs(n10 - (n11 + 1))
     print(f'Imbalance function if subject goes in control:      G0 = {g0}')
     print(f'Imbalance function if subject goes in intervention: G1 = {g1}')
     print()
@@ -123,7 +58,7 @@ def main():
     if g0 == g1:
         p_control = 0.5
         print("Equal imbalance: p(control)=0.5.")
-    if g0 < g1:
+    elif g0 < g1:
         p_control = p_imb
         print(f'Control has least imbalance: p(control)={p_control}.')
     else:
