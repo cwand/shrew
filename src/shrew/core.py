@@ -9,7 +9,7 @@ def read_enroll_file(filename: str, levels_per_factor: list[int],
     mat_shape2 = tuple(mat_shape)
     enrolls = np.zeros(mat_shape2)
 
-    with (open(filename) as f):
+    with open(filename) as f:
         f.readline()  # HEADER DATA
         for line in f:
             enrolls[tuple(map(
